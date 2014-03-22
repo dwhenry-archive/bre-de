@@ -1,9 +1,16 @@
 PATH
+  remote: engines/shared
+  specs:
+    shared (0.0.1)
+      haml
+      rails
+
+PATH
   remote: engines/user
   specs:
     user (0.0.1)
       devise
-      rails (~> 4.1.0.rc1)
+      rails
 
 GEM
   remote: https://rubygems.org/
@@ -53,6 +60,8 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.0.2)
+    haml (4.0.5)
+      tilt
     hike (1.2.3)
     i18n (0.6.9)
     jbuilder (2.0.5)
@@ -135,9 +144,10 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   jbuilder (~> 2.0)
   jquery-rails
-  rails (= 4.1.0.rc1)
+  rails
   sass-rails (~> 4.0.1)
   sdoc (~> 0.4.0)
+  shared!
   spring
   sqlite3
   turbolinks

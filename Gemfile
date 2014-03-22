@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.0.rc1'
+gem 'rails'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Use SCSS for stylesheets
@@ -39,7 +39,8 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 require "./lib/boot_inquirer"
-#gemspec path: "apps/shared"
+
+gemspec path: "engines/shared"
 BootInquirer.each_active_app do |app|
   gemspec path: "engines/#{app.gem_name}"
 end
