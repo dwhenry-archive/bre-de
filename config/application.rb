@@ -2,9 +2,15 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+require_relative "../lib/boot_inquirer"
+BootInquirer.each_active_app do |app|
+  require app.gem_name
+end
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
+Bundler.setup(*Rails.groups)
+
 
 module BreDe
   class Application < Rails::Application

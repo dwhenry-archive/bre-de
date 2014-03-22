@@ -38,4 +38,8 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'user', path: 'engines/user'
+require "./lib/boot_inquirer"
+#gemspec path: "apps/shared"
+BootInquirer.each_active_app do |app|
+  gemspec path: "engines/#{app.gem_name}"
+end
