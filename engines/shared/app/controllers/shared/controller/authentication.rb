@@ -4,26 +4,24 @@ module Shared
       extend ::ActiveSupport::Concern
 
       included do
-        helper_method :logged_in?
-        helper_method :current_user
-      end
-
-      def current_user
-        return @current_user if defined?(@current_user)
-        @current_user = nil
-        return nil unless session[:current_user_id]
-
-        namespace = self.class.name.split('::').first
-        klass     = "#{namespace}::User".constantize rescue nil
-        klass   ||= Shared::User::Stub
-
-        @current_user = klass.find_by_id(session[:current_user_id])
+        # This is our new function that comes before Devise's one
+        before_filter :authenticate_user_from_token!
+        # This is Devise's authentication
+        before_filter :authenticate_user!
       end
 
       protected
 
-      def require_user
-        redirect_to "/" unless current_user
+      def authenticate_user_from_token!
+        user_email = params[:email].presence
+        user       = user_email && User::User.find_by_email(user_email)
+
+        # Notice how we use Devise.secure_compare to compare the token
+        # in the database with the token given in the params, mitigating
+        # timing attacks.
+        if user && Devise.secure_compare(user.authentication_token, params[:token])
+          sign_in user, store: false
+        end
       end
     end
   end
