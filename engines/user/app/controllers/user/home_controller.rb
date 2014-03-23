@@ -1,6 +1,5 @@
 module User
   class HomeController < ApplicationController
-    include Shared::Controller::Layout
 
     def index
       render text: "Hello: #{current_user.email}"

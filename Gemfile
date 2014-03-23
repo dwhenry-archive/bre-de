@@ -24,7 +24,7 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
@@ -38,8 +38,9 @@ gem 'spring',        group: :development
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-require "./lib/boot_inquirer"
+gem "slim"
 
+require "./lib/boot_inquirer"
 gemspec path: "engines/shared"
 BootInquirer.each_active_app do |app|
   gemspec path: "engines/#{app.gem_name}"
@@ -48,4 +49,10 @@ end
 group :test, :development do
   gem 'pry'
   gem 'pry-nav'
+  gem 'rspec-rails'
+  gem "capybara"
+end
+
+group :development do
+  gem 'spring'
 end

@@ -2,14 +2,15 @@ module User
   class Json::SessionsController < Json::BaseController
     include Devise::Controllers::Helpers
 
+    before_filter :authenticate_user!, except: [:create]
     before_filter :ensure_params_exist
 
     respond_to :json
 
     def create
-      resource = User.find_for_database_authentication(params[:user_login].slice(:email, :name))
+      resource = User.find_for_database_authentication(params.slice(:email))
       return invalid_login_attempt unless resource
-      if resource.valid_password?(params[:user_login][:password])
+      if resource.valid_password?(params[:password])
         sign_in("user", resource)
         render json: {
           success: true,
@@ -29,7 +30,7 @@ module User
 
     protected
     def ensure_params_exist
-      return unless params[:user_login].blank?
+      return unless params[:email].blank?
       render json: {
         success: false,
         message: "missing user_login parameter"
