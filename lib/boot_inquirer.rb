@@ -15,6 +15,7 @@
 
 class BootInquirer
   APPS = {
+    'd' => 'demo',
     'u' => 'user',
     #'z' => 'admin'
   }
