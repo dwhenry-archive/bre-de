@@ -1,0 +1,28 @@
+
+script type="text/ng-template" id="login"
+  h2 Lets Login
+  form ng-controller='loginController' ng-submit="login()"
+    p
+      | Email
+      br
+      input ng-model="user.email" type="email" required=""
+    p
+      | Password
+      br
+      input ng-model="user.password" type="password" required=""
+    p
+      input type="submit" value="Submit"
+
+script type="text/ng-template" id="games"
+  h2 Games For: {{user.email}}
+  div ng-repeat="game in games"
+    span style='font-weight: bold' Status:
+    '  {{game.status}}
+    span style='font-weight: bold' Players:
+    span ng-repeat="player in game.players"
+      '  {{player.name}}
+
+= javascript_include_tag 'demo/manifests/angular'
+
+div ng-view=''
+
