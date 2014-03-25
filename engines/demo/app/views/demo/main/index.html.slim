@@ -21,6 +21,24 @@ script type="text/ng-template" id="games"
     span style='font-weight: bold' Players:
     span ng-repeat="player in game.players"
       '  {{player.name}}
+  a ng-click="newGame()" New Game
+
+script type="text/ng-template" id="new_game"
+  h2 New Game For: {{user.email}}
+
+  h3 Join Game:
+  p
+    .game ng-repeat="game in games"
+      | {{game.players}} out of {{game.max_players}}
+      br
+
+  h3 Create Game:
+  form ng-controller='loginController' ng-submit="login()"
+    p
+      | Max Players
+      select ng-model="user.email" type="email" required=""
+    p
+      input type="submit" value="Submit"  a ng-click="create_game()" New Game
 
 = javascript_include_tag 'demo/manifests/angular'
 

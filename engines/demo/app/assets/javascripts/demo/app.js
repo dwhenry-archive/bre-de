@@ -15,6 +15,10 @@ angular.module('demoApp', [
     templateUrl: 'games',
     controller: 'gamesController'
    })
+  .when('/games/new',{
+    templateUrl: 'new_game',
+    controller: 'gameController'
+  })
   .when('/games/:id', {
     templateUrl: 'game',
     controller: 'gameController'

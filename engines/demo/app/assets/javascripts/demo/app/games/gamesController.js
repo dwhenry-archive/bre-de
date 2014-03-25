@@ -1,24 +1,18 @@
 'use strict'
 
 angular.module('demoApp')
-.controller('gamesController', ['$scope', 'accountService', function($scope, accountService) {
-  $scope.user = accountService.getUser();
+.controller('gamesController', ['$scope', '$location', 'accountService', 'gamesService',
+    function($scope, $location, accountService, gamesService) {
+  $scope.user = user = accountService.getUser();
 
-  $scope.games = [{
-    id: 123,
-    status: 'pending',
-    players: [
-      { name: 'Fred', id: 123 },
-      { name: 'John', id: 234 },
-    ]
-  }, {
-    id: 222,
-    status: 'running',
-    players: [
-      { name: 'Alex', id: 235 },
-      { name: 'John', id: 234 },
-    ]
-  }]
+
+  gamesService.forUser(user).then(function(games) {
+    $scope.games = games;
+  })
+
+  $scope.newGame = function() {
+    $location.path('/games/new').replace()
+  }
 }])
 
 
