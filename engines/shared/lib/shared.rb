@@ -1,5 +1,5 @@
 require "shared/engine"
-require 'haml'
+require 'slim'
 require 'jquery-rails'
 require 'sass-rails'
 

@@ -11,8 +11,8 @@ Gem::Specification.new do |s|
   s.description = "Share it!"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile"]
-  s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails"
-  s.add_dependency "haml"
+  s.add_dependency "slim"
+  s.add_dependency "responsible"
 end
