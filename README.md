@@ -1,8 +1,8 @@
-= Bre-de
+# Bre-de
 
 This is the back end implementation of the co(de) (bre)aker game.
 
-== RULES:
+## RULES:
 
 Place all game pieces face down on the table and shuffle
 Each player takes X number of pieces (X is dependant on the number of players)
@@ -16,7 +16,7 @@ If they guess correctly the other player must either show the piece. The player 
 - adding there new piece to their hidden pieces.
 - guessing another the number of another players piece (from here the result is the same as the first guess)
 
-== TODO:
+## TODO:
 
 The following functionality still needs to be added:
 
