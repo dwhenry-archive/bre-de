@@ -1,16 +1,17 @@
 
 angular.module('demoApp')
-.service('accountService',['$http', '$location', function($http, $location) {
+.service('accountService',['$http', '$location', '$cookies', function($http, $location, $cookies) {
+
   var user = {
-    email: null,
-    name: null,
-    token: null,
+    email: $cookies.userEmail,
+    name: $cookies.userName,
+    token: $cookies.userToken,
     password: null, // should not really store this..
-    loggedIn: false
+    loggedIn: $cookies.userToken !== undefined
   }
 
-  this.getUser = function(loggingOptional) {
-    if(loggingOptional || this.loggedIn()) {
+  this.getUser = function(logInOptional) {
+    if(logInOptional || this.loggedIn()) {
       return user
     } else {
       $location.path('/').replace();
@@ -24,8 +25,9 @@ angular.module('demoApp')
   this.login = function() {
     $http({method: 'GET', url: '/login?email=' + user.email + '&password=' + user.password})
     .success(function(data, status, headers, config) {
-      user.name = data.name;
-      user.token = data.token;
+      $cookies.userName = user.name = data.name;
+      $cookies.userToken = user.token = data.auth_token;
+      $cookies.userEmail = user.email = data.email;
       user.loggedIn = true
       $location.path('/games').replace();
     })
