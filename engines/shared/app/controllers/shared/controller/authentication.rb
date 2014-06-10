@@ -13,8 +13,12 @@ module Shared
       protected
 
       def authenticate_user_from_token!
-        user_email = params[:email].presence
-        user       = user_email && User::User.find_by_email(user_email)
+        user =
+          if (user_email = params[:email].presence)
+            User::User.find_by_email(user_email)
+          elsif (user_name = params[:name].presence)
+            User::User.find_by_name(user_email)
+          end
 
         # Notice how we use Devise.secure_compare to compare the token
         # in the database with the token given in the params, mitigating

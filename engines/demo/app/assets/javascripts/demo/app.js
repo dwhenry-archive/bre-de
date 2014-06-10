@@ -17,12 +17,16 @@ angular.module('demoApp', [
    })
   .when('/games/new',{
     templateUrl: 'new_game',
-    controller: 'gameController'
+    controller: 'newGameController'
   })
   .when('/games/:id', {
     templateUrl: 'game',
-    controller: 'gameController'
+    controller: 'newGameController'
    })
+  .when('/logout', {
+    templateUrl: 'login',
+    controller: 'logoutController'
+  })
   .otherwise({
     redirectTo: '/'
    })

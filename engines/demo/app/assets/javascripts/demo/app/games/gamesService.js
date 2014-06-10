@@ -2,26 +2,45 @@
 angular.module('demoApp')
   .service('gamesService',['$http', function($http) {
     this.forUser = function(user) {
-      return getGames('for')
+      return getGames('for', user)
     };
 
     this.waitingPlayers = function(user) {
-      return getGames('pendingPlayers')
+      return getGames('waiting', user)
     }
 
-    this.create = function(user, maxPlayers) {
-
-    }
-
-    var getGames = function(filter) {
-      return $http({method: 'GET', url: '/games?filter=' + filter + '&email=' + user.email + '&token=' + user.token})
-        .success(function(data, status, headers, config) {
-          return data
-        })
-        .error(function(data, status, headers, config) {
-          alert('fail')
+    this.create = function(user, details) {
+      return $http({
+        method: 'POST',
+        url: '/games',
+        data: {
+          name: user.name,
+          token: user.token,
+          max_player: details.players
+        }
+      })
+      .then(
+        function (response) {
+          return response.data
+        },
+        function (response) {
+          alert('Something has gone wrong with the game.  Please try again.')
           return []
-        });
+        }
+      );
+    }
+
+    var getGames = function(filter, user) {
+      return $http({method: 'GET', url: '/games?filter=' + filter + '&name=' + user.name + '&token=' + user.token})
+      .then(
+        function(response) {
+          return response.data
+        },
+        function(response) {
+          alert('Something has gone wrong with the game.  Please try again.')
+          return []
+        }
+      );
 
     }
 

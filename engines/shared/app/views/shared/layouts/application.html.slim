@@ -24,7 +24,11 @@ html
           ul.nav.navbar-nav.navbar-right.dropdown
             - if current_user
               li
-                a href="/logout" Logout
+                - content = yield(:logout)
+                - if content.blank?
+                  a href="/logout" Logout
+                - else
+                  = content
             - else
               li
                 a href="/signup" Sign Up

@@ -4,5 +4,7 @@
     h1 Web Demo
     hr
     = yield
+- content_for :logout do
+  a href="#/logout" Logout
 
 = render :file => 'shared/layouts/application'
