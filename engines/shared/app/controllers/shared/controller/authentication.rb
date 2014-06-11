@@ -17,7 +17,7 @@ module Shared
           if (user_email = params[:email].presence)
             User::User.find_by_email(user_email)
           elsif (user_name = params[:name].presence)
-            User::User.find_by_name(user_email)
+            User::User.find_by_name(user_name)
           end
 
         # Notice how we use Devise.secure_compare to compare the token
