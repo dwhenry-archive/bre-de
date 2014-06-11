@@ -1,0 +1,18 @@
+script type="text/ng-template" id="login"
+  .row
+    .column
+      h2 Lets Login
+  form ng-controller='loginController' ng-submit="login()"
+    .row
+      .column
+        | Email
+        br
+        input ng-model="user.email" type="email" required=""
+    .row
+      .column
+        | Password
+        br
+        input ng-model="user.password" type="password" required=""
+    .row
+      .column
+        input type="submit" value="Submit"

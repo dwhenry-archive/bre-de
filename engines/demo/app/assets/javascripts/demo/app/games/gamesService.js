@@ -2,12 +2,16 @@
 angular.module('demoApp')
   .service('gamesService',['$http', function($http) {
     this.forUser = function(user) {
-      return getGames('for', user)
+      return getGames('for', user);
     };
 
     this.waitingPlayers = function(user) {
-      return getGames('waiting', user)
-    }
+      return getGames('waiting', user);
+    };
+
+    this.pendingGames = function(user) {
+      return getGames('for', user);
+    };
 
     this.create = function(user, details) {
       return $http({

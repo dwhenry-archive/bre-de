@@ -1,0 +1,10 @@
+script type="text/ng-template" id="games"
+  .row
+    .column
+      h2 Games For: {{user.name}} ({{user.email}})
+  .row
+    .column
+      = render 'demo/main/partials/games_table', games_array_name: 'games'
+  .row
+    .column
+      a ng-click="newGame()" New Game
