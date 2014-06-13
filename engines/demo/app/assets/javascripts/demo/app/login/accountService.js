@@ -8,6 +8,13 @@ angular.module('demoApp')
     token: $cookies.userToken
   }
 
+  this.$cookies = $cookies
+  this.$watch('$cokkies.userToken', function() {
+    user.email = $cookies.userEmail;
+    user.name = $cookies.userName;
+    user.token =  $cookies.userToken;
+  })
+
   this.getUser = function(logInOptional) {
     if(logInOptional || this.loggedIn()) {
       return user
@@ -23,9 +30,10 @@ angular.module('demoApp')
   this.logout = function() {
     delete $cookies["userToken"]
     user.token = undefined
+    return $http({method: 'GET', url: '/logout'})
   };
 
-  this.login = function() {
+  this.login = function(user) {
     return $http({method: 'GET', url: '/login?email=' + user.email + '&password=' + user.password})
     .then(
       function(response) {
@@ -43,6 +51,26 @@ angular.module('demoApp')
       }
     );
   };
+
+  this.create = function(user) {
+    return $http({method: 'POST', url: '/signup', data: {user: user, authenticity_token: "aEKCSuZuZtR3D8ajQJjAxrzCdz9DXD/QqN7VAOMMvmU="}})
+      .then(
+      function (response) {
+        if (response.data.auth_token === undefined) {
+          return false;
+        }
+        $cookies.userName = user.name = response.data.name;
+        $cookies.userToken = user.token = response.data.auth_token;
+        $cookies.userEmail = user.email = response.data.email;
+        user.loggedIn = true
+        return true;
+      },
+      function (response) {
+        return false;
+      }
+    );
+
+  }
 
 }])
 

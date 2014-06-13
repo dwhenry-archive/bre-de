@@ -5,9 +5,9 @@ angular.module('demoApp')
   if(accountService.loggedIn()) {
     progressToGames(true)
   }
-  $scope.user = accountService.getUser(true);
+  var user = $scope.user = accountService.getUser(true);
   $scope.login = function() {
-    accountService.login().then(progressToGames)
+    accountService.login(user).then(progressToGames)
   }
 
   function progressToGames(success) {

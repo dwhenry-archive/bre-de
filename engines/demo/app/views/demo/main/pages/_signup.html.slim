@@ -1,0 +1,30 @@
+script type="text/ng-template" id="signup"
+  .row
+    .column
+      h2 Create a new account
+
+  form ng-controller='signupController' ng-submit="login()"
+    .row
+      .column.medium-6
+        | Name
+        br
+        input ng-model="user.name" type="text" required=""
+
+      .column.medium-6
+        | Email
+        br
+        input ng-model="user.email" type="email" required=""
+
+      .column.medium-6
+        | Password
+        br
+        input ng-model="user.password" type="password" required=""
+
+      .column.medium-6
+        | Confirm Password
+        br
+        input ng-model="user.password_confirmation" type="password" required=""
+
+    .row
+      .column
+        input type="submit" value="Submit" class="button"

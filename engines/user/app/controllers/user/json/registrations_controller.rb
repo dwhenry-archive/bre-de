@@ -1,5 +1,5 @@
 module User
-  class Json::RegistrationsController < Json::BaseController
+  class Json::RegistrationsController < Devise::RegistrationsController
 
     respond_to :json
 
@@ -7,9 +7,8 @@ module User
       build_resource(sign_up_params)
 
       if resource.save
-        render json: resource.as_json(
-          auth_token: resource.authentication_token,
-          email: resource.email
+        render json: resource.as_json.merge(
+          auth_token: resource.authentication_token
         ), status: 201
         return
       else

@@ -24,11 +24,7 @@ html
           ul.nav.navbar-nav.navbar-right.dropdown
             - if current_user
               li
-                - content = yield(:logout)
-                - if content.blank?
-                  a href="/logout" Logout
-                - else
-                  = content
+                a href="/logout" Logout
             - else
               li
                 a href="/signup" Sign Up
@@ -36,8 +32,7 @@ html
                 a href="/login" Log In
 
     .container
-      = content = yield(:content)
-      = yield if content.blank?
+      = yield
 
       footer
 

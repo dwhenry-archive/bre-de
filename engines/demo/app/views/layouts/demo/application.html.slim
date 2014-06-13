@@ -1,10 +1,28 @@
+html
+  head
+    meta charset='utf-8'
+    meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'
+    meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0 user-scalable=no'
+    meta name='apple-mobile-web-app-capable' content='yes'
+    meta name='apple-mobile-web-app-status-bar-style' content='black'
 
-- content_for :content do
-  div ng-app="demoApp"
-    h1 Web Demo
-    hr
-    = yield
-- content_for :logout do
-  a href="#/logout" Logout
+    title Rails Engines Example
 
-= render :file => 'shared/layouts/application'
+    = stylesheet_link_tag 'shared/manifests/application'
+    = render_manifests('css')
+
+  body ng-app="demoApp"
+    = render 'layouts/demo/header', fixed: true
+    = render 'layouts/demo/header', fixed: false
+    .container
+      .row
+        .column
+          h1 Web Demo
+          hr
+      = yield
+
+      footer
+
+    = javascript_include_tag 'shared/manifests/application'
+    = render_manifests('js')
+

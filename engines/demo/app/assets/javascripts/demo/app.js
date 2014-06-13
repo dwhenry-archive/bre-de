@@ -1,33 +1,41 @@
-
-
 angular.module('demoApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
   'ngRoute'
 ])
-.config(function($routeProvider) {
-  $routeProvider
-  .when('/', {
-    templateUrl: 'login'
-   })
-  .when('/games',{
-    templateUrl: 'games',
-    controller: 'gamesController'
-   })
-  .when('/games/new',{
-    templateUrl: 'new_game',
-    controller: 'newGameController'
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/', {
+        templateUrl: 'login'
+      })
+
+      // Login
+      .when('/login', {
+        templateUrl: 'login'
+      })
+      .when('/logout', {
+        templateUrl: 'login',
+        controller: 'logoutController'
+      })
+      .when('/signup', {
+        templateUrl: 'signup',
+      })
+
+      // Games
+      .when('/games', {
+        templateUrl: 'games',
+        controller: 'gamesController'
+      })
+      .when('/games/new', {
+        templateUrl: 'new_game',
+        controller: 'newGameController'
+      })
+      .when('/games/:id', {
+        templateUrl: 'game',
+        controller: 'newGameController'
+      })
+      .otherwise({
+        redirectTo: '/'
+      })
   })
-  .when('/games/:id', {
-    templateUrl: 'game',
-    controller: 'newGameController'
-   })
-  .when('/logout', {
-    templateUrl: 'login',
-    controller: 'logoutController'
-  })
-  .otherwise({
-    redirectTo: '/'
-   })
-})

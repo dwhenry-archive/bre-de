@@ -4,15 +4,16 @@ script type="text/ng-template" id="login"
       h2 Lets Login
   form ng-controller='loginController' ng-submit="login()"
     .row
-      .column
+      .column.medium-6
         | Email
         br
         input ng-model="user.email" type="email" required=""
-    .row
-      .column
+
+      .column.medium-6
         | Password
         br
         input ng-model="user.password" type="password" required=""
+
     .row
       .column
-        input type="submit" value="Submit"
+        input type="submit" value="Submit" class="button"

@@ -12,6 +12,10 @@ module FakeWardenForEngines
       end
     end
   end
+
+  def json_response
+    JSON.parse(response.body)
+  end
 end
 
 RSpec.configure do |config|

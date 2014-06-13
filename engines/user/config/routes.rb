@@ -2,6 +2,9 @@ User::Engine.routes.draw do
 
   get 'login' => "json/sessions#create"
   get 'logout' => "json/sessions#destroy"
+  devise_scope :user do
+    post 'signup' => "json/registrations#create"
+  end
 
   devise_for :users,
     class_name: "User::User",
