@@ -1,8 +1,8 @@
-# Bre-de
+* Bre-de
 
 This is the back end implementation of the co(de) (bre)aker game.
 
-## RULES:
+** RULES:
 
 Place all game pieces face down on the table and shuffle
 Each player takes X number of pieces (X is dependant on the number of players)

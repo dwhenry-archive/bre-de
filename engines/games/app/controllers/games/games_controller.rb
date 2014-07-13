@@ -1,15 +1,11 @@
 module Games
   class GamesController < Games::ApplicationController
     def index
-      games = Game.filter(params[:filter], current_user).all.map do |game|
-        {
-          id: game.id,
-          status: game.status,
-          stats: " (#{game.players.count} of #{game.max_player})",
-          players: game.players.map{ |p| p.user.name }.join(', ')
-        }
-      end
-      render json: games
+      render json: GamesSerializer.new(
+        Responsible::Consumer.new,
+        Game.filter(params[:filter], current_user).all,
+        current_user
+      )
     end
 
     def create
@@ -19,18 +15,18 @@ module Games
       )
 
       if game.save
-        render json: { id: game.id }
+        render json: { status: 'success', game_id: game.id }
       else
-        raise "Unable to create game.. fail.."
+        render json: { status: 'error', errors: game.errors.full_messages }
       end
     end
 
     def update
       game = Game.find(params[:id])
       if game.add_player(current_user.becomes(Games::User))
-        render json: { id: game.id, errors: [] }
+        render json: { status: 'success', game_id: game.id }
       else
-        render json: { id: game.id, errors: game.errors.full_messages }
+        render json: { status: 'error', errors: game.errors.full_messages }
       end
     end
   end

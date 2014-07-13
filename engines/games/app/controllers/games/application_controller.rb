@@ -1,5 +1,6 @@
 module Games
   class ApplicationController < ActionController::Base
-    include Shared::Controller::Layout
+    layout 'shared/layouts/application'
+    include Shared::Controller::TokenAuthentication
   end
 end

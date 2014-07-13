@@ -13,19 +13,24 @@ angular.module('demoApp')
       return getGames('for', user);
     };
 
-    this.create = function(user, details) {
+    this.createGame = function(user, maxPlayers) {
       return $http({
         method: 'POST',
         url: '/games',
         data: {
           name: user.name,
           token: user.token,
-          max_player: details.players
+          max_player: maxPlayers
         }
       })
       .then(
         function (response) {
-          return response.data
+          if(response.data.status === 'success')
+            return response.data.game_id
+          else {
+            alert("Something has gone wrong\n\nStatus: " + data.status + "\nErrors: " + data.errors)
+            return []
+          }
         },
         function (response) {
           alert('Something has gone wrong with the game.  Please try again.')
@@ -35,20 +40,16 @@ angular.module('demoApp')
     }
 
     var getGames = function(filter, user) {
-      return $http({method: 'GET', url: '/games?filter=' + filter + '&name=' + user.name + '&token=' + user.token})
-      .then(
-        function(response) {
-          return response.data
+      return $http({method: 'GET', url: '/games?filter=' + filter + '&email=' + user.email + '&token=' + user.token})
+        .then(
+        function(data, status, headers, config) {
+          return data.data;
         },
-        function(response) {
-          alert('Something has gone wrong with the game.  Please try again.')
-          return []
-        }
-      );
-
+        function(data, status, headers, config) {
+          alert('fail');
+          return [];
+        });
     }
-
-
   }])
 
 

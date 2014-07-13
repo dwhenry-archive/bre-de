@@ -39,6 +39,7 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # gem 'debugger', group: [:development, :test]
 
 gem "slim"
+gem "responsible", git: "git@github.com:reevoo/responsible.git"
 
 require "./lib/boot_inquirer"
 gemspec path: "engines/shared"
