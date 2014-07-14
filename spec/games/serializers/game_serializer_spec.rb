@@ -2,7 +2,14 @@ require "spec_helper"
 
 describe Games::GameSerializer do
   let(:consumer) { Responsible::Consumer.new }
-  let(:user) { Games::User.create!(name: 'Dave') }
+  let(:user) do
+    User::User.create!(
+      name: 'Dave',
+      email: 'test@test.com',
+      password: 'testers1',
+      password_confirmation: 'testers1',
+    ).becomes(Games::User)
+  end
   let(:game) do
     Games::Game.create!(
       status: "pending",
@@ -18,17 +25,23 @@ describe Games::GameSerializer do
       {
         id: game.id,
         status: 'pending',
-        player_count: [1, 4],
+        stats: "(1 of 4)",
         joinable: false,
         players: [
-          { name: 'Dave', id: user.id, status: 'pending' }
+          { name: 'dave', id: user.id, status: 'pending' }
         ]
       }
     )
   end
 
   it "is marked as joinable is user is not already a player" do
-    other_user = Games::User.create!(name: 'Fred', email: 'fred@test.com')
+    other_user = User::User.create!(
+      name: 'Fred',
+      email: 'fred@test.com',
+      password: 'testers1',
+      password_confirmation: 'testers1',
+    ).becomes(Games::User)
+
     json = described_class.new(consumer, game, other_user).as_json
 
     expect(json[:joinable]).to be_true

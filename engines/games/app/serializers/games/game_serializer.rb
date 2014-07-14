@@ -12,7 +12,7 @@ module Games
     end
 
     def stats
-      "(#{game.players.count} of #{game.max_player})"
+      "(#{data.players.count} of #{data.max_player})"
     end
 
     def players

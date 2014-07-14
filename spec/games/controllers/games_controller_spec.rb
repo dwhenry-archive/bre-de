@@ -1,7 +1,15 @@
 require 'spec_helper'
 
 describe Games::GamesController, type: :controller do
-  let!(:user) { Games::User.create!(authentication_token: 'login_token', email: 'test@test.com', name: 'Dave') }
+  let!(:user) do
+    User::User.create!(
+      authentication_token: 'login_token',
+      email: 'test@test.com',
+      name: 'Dave',
+      password: 'testers1',
+      password_confirmation: 'testers1',
+    ).becomes(Games::User)
+  end
 
   describe '#index' do
     context "when filter is 'for'" do

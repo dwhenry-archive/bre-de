@@ -19,9 +19,11 @@ module Shared
         # timing attacks.
         if user && Devise.secure_compare(user.authentication_token, params[:token])
           sign_in user, store: false
-        else
-          render json: { status: 'logout', error: ['invalid user token'] }
         end
+      end
+
+      def require_user_authentication!
+        current_user || render(json: { status: 'logout', error: ['invalid user token'] })
       end
     end
   end
