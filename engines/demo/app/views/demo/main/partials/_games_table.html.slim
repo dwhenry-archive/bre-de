@@ -6,10 +6,14 @@
   .column.small-2.large-1
     | &nbsp;
 
-.row ng-repeat="game in #{games_array_name}"
+.row ng-repeat="game in #{games_array_name}" ng-controller='gamesTableController'
   .column.small-4.medium-3.large-2
-    | {{game.status}} {{game.stats}}
-  .column.small-6.medium-7.large-9
-    | {{game.players}}
-  .column.small-2.large-1
-    = link_to 'Join', "#/games/{{game.id}}/join"
+    | {{game.status}}
+  .column.small-6.medium-7.large-8
+    span ng-repeat="player in game.players"
+      | {{player.name}}{{$last ? '' : ', '}}
+    '  {{game.stats}}
+  .column.small-2.large-2 ng-hide="currentPlayer(#{games_array_name}, game.id)"
+    a ng-click="joinGame(game.id)" Join
+  .column.small-2.large-2 ng-show="currentPlayer(#{games_array_name}, game.id)"
+    a ng-click="leaveGame(game.id)" Leave

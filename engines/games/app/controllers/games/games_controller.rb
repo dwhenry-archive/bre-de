@@ -23,7 +23,7 @@ module Games
 
     def update
       game = Game.find(params[:id])
-      if game.add_player(current_user.becomes(Games::User))
+      if game.execute_command(params[:command], current_user.becomes(Games::User))
         render json: { status: 'success', game_id: game.id }
       else
         render json: { status: 'error', errors: game.errors.full_messages }

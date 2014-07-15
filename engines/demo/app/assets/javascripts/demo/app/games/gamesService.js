@@ -39,6 +39,26 @@ angular.module('demoApp')
       );
     }
 
+    this.leaveGame = function(gameID) {
+      return $http({
+        method: 'PUT',
+        url: '/games/' + gameID,
+        data: {
+          command: 'leave_game'
+        }
+      })
+    }
+
+    this.joinGame = function(gameID) {
+      return $http({
+        method: 'PUT',
+        url: '/games/' + gameID,
+        data: {
+          command: 'add_player'
+        }
+      })
+    }
+
     var getGames = function(filter, user) {
       return $http({method: 'GET', url: '/games?filter=' + filter + '&email=' + user.email + '&token=' + user.token})
         .then(

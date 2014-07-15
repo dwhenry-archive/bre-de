@@ -3,12 +3,13 @@ angular.module('demoApp')
 .service('accountService',['$http', '$location', '$cookies', function($http, $location, $cookies) {
 
   var user = {
-    email: $cookies.userEmail,
-    name: $cookies.userName,
-    token: $cookies.userToken
+    id: $cookies.demoUserID,
+    email: $cookies.demoUserEmail,
+    name: $cookies.demoUserName,
+    token: $cookies.demoUserToken
   }
 
-  this.$cookies = $cookies
+  var cookies = this.$cookies = $cookies
 //  this.$watch('$cokkies.userToken', function() {
 //    user.email = $cookies.userEmail;
 //    user.name = $cookies.userName;
@@ -24,11 +25,11 @@ angular.module('demoApp')
   };
 
   this.loggedIn = function() {
-    return $cookies.userToken !== undefined;
+    return $cookies.demoUserToken !== undefined;
   };
 
   this.logout = function() {
-    delete $cookies["userToken"]
+    delete $cookies["demoUserToken"]
     user.token = undefined
     return $http({method: 'GET', url: '/logout'})
   };
@@ -40,9 +41,10 @@ angular.module('demoApp')
         if(response.data.auth_token === undefined) {
           return false;
         }
-        $cookies.userName = user.name = response.data.name;
-        $cookies.userToken = user.token = response.data.auth_token;
-        $cookies.userEmail = user.email = response.data.email;
+        cookies.demoUserID = user.id = '' + response.data.id;
+        cookies.demoUserName = user.name = response.data.name;
+        cookies.demoUserToken = user.token = response.data.auth_token;
+        cookies.demoUserEmail = user.email = response.data.email;
         user.loggedIn = true
         return true;
       },
@@ -59,9 +61,10 @@ angular.module('demoApp')
         if (response.data.auth_token === undefined) {
           return false;
         }
-        $cookies.userName = user.name = response.data.name;
-        $cookies.userToken = user.token = response.data.auth_token;
-        $cookies.userEmail = user.email = response.data.email;
+        cookies.demoUserID = user.id = response.data.id;
+        cookies.demoUserName = user.name = response.data.name;
+        cookies.demoUserToken = user.token = response.data.auth_token;
+        cookies.demoUserEmail = user.email = response.data.email;
         user.loggedIn = true
         return true;
       },
