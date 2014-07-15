@@ -9,11 +9,11 @@ angular.module('demoApp')
   }
 
   this.$cookies = $cookies
-  this.$watch('$cokkies.userToken', function() {
-    user.email = $cookies.userEmail;
-    user.name = $cookies.userName;
-    user.token =  $cookies.userToken;
-  })
+//  this.$watch('$cokkies.userToken', function() {
+//    user.email = $cookies.userEmail;
+//    user.name = $cookies.userName;
+//    user.token =  $cookies.userToken;
+//  })
 
   this.getUser = function(logInOptional) {
     if(logInOptional || this.loggedIn()) {

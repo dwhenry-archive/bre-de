@@ -41,6 +41,8 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem "slim"
 gem "responsible", git: "git@github.com:reevoo/responsible.git"
 
+gem "poltergeist"
+
 require "./lib/boot_inquirer"
 gemspec path: "engines/shared"
 BootInquirer.each_active_app do |app|
