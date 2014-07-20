@@ -1,3 +1,4 @@
+/ In the angular app
 div ng-app="demoApp"
   = render 'demo/main/pages/login'
   = render 'demo/main/pages/signup'
@@ -10,7 +11,8 @@ div ng-app="demoApp"
 
   div ng-view=''
 
-#gameDetail style="display: none;"
+/ Outside the angular app
+#gameRowDetail style="display: none;"
   .column.small-4.medium-3.large-2
     | {{game.status}}
   .column.small-6.medium-7.large-8
@@ -19,4 +21,17 @@ div ng-app="demoApp"
     '  {{game.stats}}
   .column.small-2.large-2
     a ng-click="options.actionMethod(game.id)" {{options.actionName}}
+
+
+#gamesTableDetail style="display: none;"
+  .row.header
+    .column.small-4.medium-3.large-2
+      | Status
+    .column.small-6.medium-7.large-9
+      | Players
+    .column.small-2.large-1
+      | &nbsp;
+
+  .row ng-repeat="game in games"
+    game-row-details game="game" current-player="currentPlayer(game.id)"
 
