@@ -16,18 +16,18 @@ angular.module('demoApp')
       return player !== undefined
     };
 
-    $scope.joinGame = function(gameID) {
-      gamesService.joinGame(gameID).then(function() {
-        loadGames($scope);
-      });
-
-    };
-
-    $scope.leaveGame = function(gameID) {
-      gamesService.leaveGame(gameID).then(function() {
-        loadGames($scope);
-      });
-    };
+//    $scope.joinGame = function(gameID) {
+//      gamesService.joinGame(gameID).then(function() {
+//        loadGames($scope);
+//      });
+//
+//    };
+//
+//    $scope.leaveGame = function(gameID) {
+//      gamesService.leaveGame(gameID).then(function() {
+//        loadGames($scope);
+//      });
+//    };
   }]);
 
 

@@ -1,11 +1,22 @@
-= render 'demo/main/pages/login'
-= render 'demo/main/pages/signup'
+div ng-app="demoApp"
+  = render 'demo/main/pages/login'
+  = render 'demo/main/pages/signup'
 
-= render 'demo/main/pages/games/index'
-= render 'demo/main/pages/games/new'
+  = render 'demo/main/pages/games/index'
+  = render 'demo/main/pages/games/new'
 
-= javascript_include_tag 'demo/manifests/angular'
-= stylesheet_link_tag 'demo/application'
+  = javascript_include_tag 'demo/manifests/angular'
+  = stylesheet_link_tag 'demo/application'
 
-div ng-view=''
+  div ng-view=''
+
+#gameDetail style="display: none;"
+  .column.small-4.medium-3.large-2
+    | {{game.status}}
+  .column.small-6.medium-7.large-8
+    span ng-repeat="player in game.players"
+      | {{player.name}}{{$last ? '' : ', '}}
+    '  {{game.stats}}
+  .column.small-2.large-2
+    a ng-click="options.actionMethod(game.id)" {{options.actionName}}
 
