@@ -7,7 +7,7 @@ module User
       build_resource(sign_up_params)
 
       if resource.save
-        render json: resource.as_json.merge(
+        render json: resource.as_json(only: [name, email]).merge(
           auth_token: resource.authentication_token
         ), status: 201
         return

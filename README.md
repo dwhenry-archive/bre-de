@@ -16,13 +16,24 @@ If they guess correctly the other player must either show the piece. The player 
 - adding there new piece to their hidden pieces.
 - guessing another the number of another players piece (from here the result is the same as the first guess)
 
+## JSON API
+
+The json api is made up fo the following part, each of which have their own documentation:
+
+- [User](engines/users/README.md)
+- [Games](engines/games/README.md)
+
 ## TODO:
 
-The following functionality still needs to be added:
+The following functionality still needs to be added (this all relates to the json API):
 
+- (done) User credentials
+  - (done) create a new player
+  - (done) signin as a existing player (returns an auth token which will be used at each step to validate the user)
+  - (done) signout a player
 - Implement the player matching engine so that users can:
-  - Create a new game and wait for players to join
-  - Join an existing game
+  - (done) Create a new game and wait for players to join
+  - (done) Join an existing game
   - Invite fiends to play a game (need to implement friends first)
 - Implement the game engine so that players can:
   - request the current state of the game

@@ -35,6 +35,10 @@ angular.module('demoApp', [
         templateUrl: 'game',
         controller: 'newGameController'
       })
+      .when('/games/:id/join', {
+        templateUrl: 'waiting',
+        controller: 'joinGameController'
+      })
       .otherwise({
         redirectTo: '/'
       })
