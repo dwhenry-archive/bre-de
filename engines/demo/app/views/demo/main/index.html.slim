@@ -20,7 +20,7 @@ div ng-app="demoApp"
       | {{player.name}}{{$last ? '' : ', '}}
     '  {{game.stats}}
   .column.small-2.large-2
-    a ng-click="options.actionMethod(game.id)" {{options.actionName}}
+    a ng-click="options.actionMethod()" {{options.actionName}}
 
 
 #gamesTableDetail style="display: none;"

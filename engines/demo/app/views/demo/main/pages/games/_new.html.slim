@@ -7,7 +7,7 @@ script type="text/ng-template" id="new_game"
     .column.medium-6
       h3 Join Game:
       p
-        games-table-details.column games="games"
+        current-games-table-details.column games="games"
         .game ng-hide="games.length" No pending games at this stage
 
     .column.medium-6
@@ -25,7 +25,7 @@ script type="text/ng-template" id="new_game"
           input type="submit" value="Ceate Game"
     .column.end
       h3 Created (by you) Games:
-      games-table-details.column games="pendingGames"
+      pending-games-table-details.column games="pendingGames"
       .game ng-hide="pendingGames.length" You have not created any games at this stage
 
   .row

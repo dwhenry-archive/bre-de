@@ -3,7 +3,7 @@ script type="text/ng-template" id="games"
     .column
       h2 Games For: {{user.name}} ({{user.email}})
   .row
-    games-table-details.column games="games"
+    current-games-table-details.column games="games"
   .row
     .column
       a ng-click="newGame()" New Game
