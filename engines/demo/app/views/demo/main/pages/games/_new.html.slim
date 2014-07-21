@@ -6,21 +6,16 @@ script type="text/ng-template" id="new_game"
   .row
     .column.medium-6
       h3 Join Game:
-      .row
-
-        .column.game ng-show="!games.length" No pending games at this stage
-        .game ng-repeat="game in games"
-          .column.small-9
-            | {{game.players}} {{game.stats}}
-          .column.small-3= link_to 'Join', '#/games/{{game.id}}/join'
-
+      p
+        current-games-table-details.column games="games"
+        .game ng-hide="games.length" No pending games at this stage
 
     .column.medium-6
       h3 Create Game:
-      form ng-controller='createGameController' ng-submit="create()"
+      form ng-submit="createGame()"
         p
           | Max Players
-          select ng-model="details.players" required=""
+          select ng-model="game.max_player" required=""
             option value=3 3
             option value=4 4
             option value=5 5
@@ -30,10 +25,8 @@ script type="text/ng-template" id="new_game"
           input type="submit" value="Ceate Game"
     .column.end
       h3 Created (by you) Games:
-      .game ng-show="!pendingGames.length" You have not created any games at this stage
-      div ng-hide="!pendingGames.length"
-        = render 'demo/main/partials/games_table', games_array_name: 'pendingGames'
-
+      pending-games-table-details.column games="pendingGames"
+      .game ng-hide="pendingGames.length" You have not created any games at this stage
 
   .row
     .column

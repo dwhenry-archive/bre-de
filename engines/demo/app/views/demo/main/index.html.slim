@@ -1,14 +1,39 @@
-= render 'demo/main/pages/waiting'
+/ In the angular app
+div ng-app="demoApp"
+  = render 'demo/main/pages/waiting'
+
+  = render 'demo/main/pages/users/login'
+  = render 'demo/main/pages/users/signup'
+
+  = render 'demo/main/pages/games/index'
+  = render 'demo/main/pages/games/new'
+
+  = javascript_include_tag 'demo/manifests/angular'
+  = stylesheet_link_tag 'demo/application'
+
+  div ng-view=''
+
+/ Outside the angular app
+#gameRowDetail style="display: none;"
+  .column.small-4.medium-3.large-2
+    | {{game.status}}
+  .column.small-6.medium-7.large-8
+    span ng-repeat="player in game.players"
+      | {{player.name}}{{$last ? '' : ', '}}
+    '  {{game.stats}}
+  .column.small-2.large-2
+    a ng-click="options.actionMethod()" {{options.actionName}}
 
 
-= render 'demo/main/pages/users/login'
-= render 'demo/main/pages/users/signup'
+#gamesTableDetail style="display: none;"
+  .row.header
+    .column.small-4.medium-3.large-2
+      | Status
+    .column.small-6.medium-7.large-9
+      | Players
+    .column.small-2.large-1
+      | &nbsp;
 
-= render 'demo/main/pages/games/index'
-= render 'demo/main/pages/games/new'
-
-= javascript_include_tag 'demo/manifests/angular'
-= stylesheet_link_tag 'demo/application'
-
-div ng-view=''
+  .row ng-repeat="game in games"
+    game-row-details game="game" current-player="currentPlayer(game.id)"
 

@@ -5,13 +5,17 @@ angular.module('demoApp')
   var user = $scope.user  = accountService.getUser();
 
 
-  gamesService.forUser(user).then(function(games) {
-    $scope.games = games;
-  })
+  var loadGames = function(scope) {
+    gamesService.forUser(user).then(function (games) {
+      scope.games = games.games;
+    });
+  };
+
+  loadGames($scope);
 
   $scope.newGame = function() {
     $location.path('/games/new').replace()
-  }
+  };
 }]);
 
 

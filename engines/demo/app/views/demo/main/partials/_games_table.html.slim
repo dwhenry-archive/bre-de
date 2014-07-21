@@ -6,10 +6,5 @@
   .column.small-2.large-1
     | &nbsp;
 
-.row ng-repeat="game in #{games_array_name}"
-  .column.small-4.medium-3.large-2
-    | {{game.status}} {{game.stats}}
-  .column.small-6.medium-7.large-9
-    | {{game.players}}
-  .column.small-2.large-1
-    = link_to 'Join', "#/games/{{game.id}}/join"
+.row ng-repeat="game in #{games_array_name}" ng-controller='gamesTableController'
+  game-row-details game="game" current-player="currentPlayer(#{games_array_name}, game.id)"

@@ -29,7 +29,7 @@ describe Games::GamesController, "Creating a new game", type: :controller do
 
   it "allow user to be added as a player to a pending game via the api" do
     expect {
-      put :update, id: game.id, name: 'bob', token: user.authentication_token
+      put :update, id: game.id, email: user.email, token: user.authentication_token
     }.to change {
       game.players.count
     }.by(1)
@@ -37,16 +37,16 @@ describe Games::GamesController, "Creating a new game", type: :controller do
 
   it "does not add a user that is already a player of the game" do
     expect {
-      put :update, id: game.id, name: 'creator', token: creator.authentication_token
+      put :update, id: game.id, email: creator.email, token: creator.authentication_token
     }.to_not change {
       game.players.count
     }
   end
 
   it "returns an appropriate error code when user is already a player in the game" do
-    put :update, id: game.id, name: 'creator', token: creator.authentication_token
+    put :update, id: game.id, email: creator.email, token: creator.authentication_token
 
-    expect(json_response).to eq({'id' => game.id, 'errors' => ['User is already a player in this game']})
+    expect(json_response).to eq({'status' => 'error', 'errors' => ['User is already a player in this game']})
   end
 
   it "returns an appropriate error code when user attempts to join full game" do
@@ -61,8 +61,8 @@ describe Games::GamesController, "Creating a new game", type: :controller do
       game.add_player(user)
     end
 
-    put :update, id: game.id, name: 'bob', token: user.authentication_token
+    put :update, id: game.id, email: user.email, token: user.authentication_token
 
-    expect(json_response).to eq({'id' => game.id, 'errors' => ['Game already has required number of player']})
+    expect(json_response).to eq({'status' => 'error', 'errors' => ['Game already has required number of player']})
   end
 end

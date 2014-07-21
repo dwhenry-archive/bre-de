@@ -15,6 +15,7 @@ module User
         render json: {
           success: true,
           auth_token: resource.authentication_token,
+          id: resource.id,
           name: resource.name,
           email: resource.email
         }

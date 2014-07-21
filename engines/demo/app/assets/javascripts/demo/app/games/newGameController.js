@@ -1,17 +1,27 @@
 'use strict'
 
 angular.module('demoApp')
-  .controller('newGameController', ['$scope', 'accountService', 'gamesService', function($scope, accountService, gamesService) {
+  .controller('newGameController', ['$scope', '$location', 'accountService', 'gamesService', function($scope, $location, accountService, gamesService) {
     var user = $scope.user = accountService.getUser();
+    $scope.game = {
+      max_player: 4
+    }
 
-    gamesService.pendingGames(user).then(function (games) {
-      $scope.pendingGames = games;
+    $scope.createGame = function() {
+      gamesService.createGame(user, $scope.game.max_player).then(function(gameId) {
+        $location.path('/games/' + gameId).replace()
+      })
+    }
+
+    gamesService.pendingGames(user).then(function (data) {
+      $scope.pendingGames = data.games;
     });
 
-    gamesService.waitingPlayers(user).then(function(games) {
-      $scope.games = games;
+    gamesService.waitingPlayers(user).then(function(data) {
+      $scope.games = data.games;
     });
-  }]);
+
+  }])
 
 
 

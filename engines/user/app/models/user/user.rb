@@ -8,8 +8,7 @@ module User
            :recoverable, :rememberable, :trackable, :validatable
 
     before_save :ensure_authentication_token
-    validates :name,
-      presence: true
+    validates :name, presence: true
 
     def ensure_authentication_token
       if authentication_token.blank?
