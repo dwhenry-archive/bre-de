@@ -1,16 +1,21 @@
 
 angular.module('demoApp')
-  .service('gamesService',['$http', function($http) {
-    this.forUser = function(user) {
-      return getGames('for', user);
+  .service('gamesService',['$http', 'accountService', function($http, accountService) {
+    var user = accountService.getUser();
+    var gameData = {
+
     };
 
-    this.waitingPlayers = function(user) {
-      return getGames('waiting', user);
+    this.forUser = function() {
+      return getGames('for');
     };
 
-    this.pendingGames = function(user) {
-      return getGames('for', user);
+    this.waitingPlayers = function() {
+      return getGames('waiting');
+    };
+
+    this.pendingGames = function() {
+      return getGames('for');
     };
 
     this.createGame = function(user, maxPlayers) {
@@ -66,6 +71,9 @@ angular.module('demoApp')
         data: {
           command: 'leave_game'
         }
+      }).then(function () {
+        getGames('for');
+        getGames('waiting');
       })
     }
 
@@ -76,14 +84,29 @@ angular.module('demoApp')
         data: {
           command: 'add_player'
         }
+      }).then(function() {
+        getGames('for');
+        getGames('waiting');
       })
     }
 
-    var getGames = function(filter, user) {
+    var setGameData = function(filter, data) {
+      if(gameData[filter]) {
+        $.each(data, function(i, d) {
+          gameData[filter][i] = d
+        });
+        gameData[filter].splice(data.length, gameData[filter].length)
+        return gameData[filter];
+      } else {
+        return (gameData[filter] = data);
+      }
+    }
+
+    var getGames = function(filter) {
       return $http({method: 'GET', url: '/games?filter=' + filter + '&email=' + user.email + '&token=' + user.token})
         .then(
         function(data, status, headers, config) {
-          return data.data;
+          return setGameData(filter, data.data.games)
         },
         function(data, status, headers, config) {
           alert('fail');

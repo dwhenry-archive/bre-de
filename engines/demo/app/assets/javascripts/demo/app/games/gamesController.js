@@ -7,7 +7,7 @@ angular.module('demoApp')
 
   var loadGames = function(scope) {
     gamesService.forUser(user).then(function (games) {
-      scope.games = games.games;
+      scope.games = games;
     });
   };
 
