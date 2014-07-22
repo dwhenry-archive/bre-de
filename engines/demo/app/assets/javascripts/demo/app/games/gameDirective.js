@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('demoApp')
-  .directive('gameRowDetails', ['gamesService', function(gamesService) {
+  .directive('cbGameRow', ['gamesService', function(gamesService) {
     var directive = {};
 
     directive.restrict = 'AE';
@@ -31,7 +31,7 @@ angular.module('demoApp')
 
     return directive;
   }])
-  .directive('gamesTableDetails', ['gamesService', 'accountService', function(gamesService, accountService) {
+  .directive('cbGamesTable', ['gamesService', 'accountService', function(gamesService, accountService) {
     var user = accountService.getUser();
     var directive = {};
 
