@@ -44,26 +44,6 @@ angular.module('demoApp')
       );
     };
 
-//    this.join = function (user, game) {
-//      return $http({
-//        method: 'PUT',
-//        url: '/games/' + game.id,
-//        data: {
-//          name: user.name,
-//          token: user.token
-//        }
-//      })
-//        .then(
-//        function (response) {
-//          return response.data
-//        },
-//        function (response) {
-//          alert('Something has gone wrong with the game.  Please try again.')
-//          return {}
-//        }
-//      );
-//    };
-
     this.leaveGame = function(gameID) {
       return $http({
         method: 'PUT',
@@ -90,27 +70,22 @@ angular.module('demoApp')
       })
     }
 
-    var setGameData = function(filter, data) {
-      if(gameData[filter]) {
-        $.each(data, function(i, d) {
-          gameData[filter][i] = d
-        });
-        gameData[filter].splice(data.length, gameData[filter].length)
-        return gameData[filter];
-      } else {
-        return (gameData[filter] = data);
-      }
-    }
-
     var getGames = function(filter) {
       return $http({method: 'GET', url: '/games?filter=' + filter + '&email=' + user.email + '&token=' + user.token})
         .then(
         function(data, status, headers, config) {
-          return setGameData(filter, data.data.games)
+          if(gameData[filter]){
+            var games = gameData[filter].games
+            games.length = 0;
+            Array.prototype.push.apply(games, data.data.games);
+          } else {
+            gameData[filter] = data.data;
+          }
+          return gameData[filter];
         },
         function(data, status, headers, config) {
           alert('fail');
-          return [];
+          return { filter : []};
         });
     }
   }])

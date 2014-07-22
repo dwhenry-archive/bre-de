@@ -14,11 +14,11 @@ angular.module('demoApp')
     }
 
     gamesService.pendingGames(user).then(function (data) {
-      $scope.pendingGames = data;
+      $scope.pendingGames = data.games;
     });
 
     gamesService.waitingPlayers(user).then(function(data) {
-      $scope.games = data;
+      $scope.games = data.games;
     });
 
   }])
