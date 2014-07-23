@@ -38,14 +38,17 @@ angular.module('demoApp')
 
     this.leaveGame = function(gameID) {
       // this is wrong.. just to display change on screen.. fix once everything else works
-      findGame(gameID).players.push({id: user.id, name: user.name, status: 'pending'});
+      var game = Utils.findById(games, gameID);
+      var player = Utils.findById(game.players, user.id);
+      game.players.splice(game.players.indexOf(player), 1);
 
       return putAction(gameID, 'leave_game')
       .then(this.loadGames)
     };
 
     this.joinGame = function(gameID) {
-      findGame(gameID).players.push({id: user.id, name: user.name, status: 'pending'});
+      var game = Utils.findById(games, gameID);
+      game.players.push({id: user.id, name: user.name, status: 'pending'});
 
       return putAction(gameID, 'add_player')
       .then(this.loadGames)
@@ -59,18 +62,6 @@ angular.module('demoApp')
           command: action
         }
       })
-    }
-
-    function findGame(gameID) {
-      var desiredGame, i, l = games.length, game;
-      for(i=0; i < l; i++) {
-        game = games[i];
-        if(game.id == gameID) {
-          desiredGame = game;
-          break;
-        }
-      };
-      return desiredGame;
     }
   }]);
 
