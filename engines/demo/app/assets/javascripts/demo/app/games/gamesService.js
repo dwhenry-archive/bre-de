@@ -2,23 +2,20 @@
 angular.module('demoApp')
   .service('gamesService',['$http', 'accountService', function($http, accountService) {
     var user = accountService.getUser();
-    var gameData = {
+    var games = [];
 
+    this.loadGames = function() {
+      $http({method: 'GET', url: '/games?email=' + user.email + '&token=' + user.token})
+        .then(
+        function (data, status, headers, config) {
+          games.length = 0;
+          Array.prototype.push.apply(games, data.data.games);
+        }
+      );
+      return games;
     };
 
-    this.forUser = function() {
-      return getGames('for');
-    };
-
-    this.waitingPlayers = function() {
-      return getGames('waiting');
-    };
-
-    this.pendingGames = function() {
-      return getGames('for');
-    };
-
-    this.createGame = function(user, maxPlayers) {
+    this.createGame = function(maxPlayers) {
       return $http({
         method: 'POST',
         url: '/games',
@@ -30,12 +27,7 @@ angular.module('demoApp')
       })
       .then(
         function (response) {
-          if(response.data.status === 'success')
-            return response.data.game_id;
-          else {
-            alert("Something has gone wrong\n\nStatus: " + data.status + "\nErrors: " + data.errors)
-            return []
-          }
+          return response.data.game_id;
         },
         function (response) {
           alert('Something has gone wrong with the game.  Please try again.')
@@ -45,19 +37,18 @@ angular.module('demoApp')
     };
 
     this.leaveGame = function(gameID) {
+      // this is wrong.. just to display change on screen.. fix once everything else works
+      findGame(gameID).players.push({id: user.id, name: user.name, status: 'pending'});
+
       return putAction(gameID, 'leave_game')
-      .then(function () {
-        getGames('for');
-        getGames('waiting');
-      })
+      .then(this.loadGames)
     };
 
     this.joinGame = function(gameID) {
+      findGame(gameID).players.push({id: user.id, name: user.name, status: 'pending'});
+
       return putAction(gameID, 'add_player')
-      .then(function() {
-        getGames('for');
-        getGames('waiting');
-      })
+      .then(this.loadGames)
     };
 
     function putAction(gameID, action) {
@@ -70,25 +61,17 @@ angular.module('demoApp')
       })
     }
 
-    function getGames(filter) {
-      return $http({method: 'GET', url: '/games?filter=' + filter + '&email=' + user.email + '&token=' + user.token})
-        .then(
-        function(data, status, headers, config) {
-          if(gameData[filter]){
-            var games = gameData[filter].games;
-            games.length = 0;
-            Array.prototype.push.apply(games, data.data.games);
-          } else {
-            gameData[filter] = data.data;
-          }
-          return gameData[filter];
-        },
-        function(data, status, headers, config) {
-          alert('fail');
-          return { filter : []};
+    function findGame(gameID) {
+      var desiredGame, i, l = games.length, game;
+      for(i=0; i < l; i++) {
+        game = games[i];
+        if(game.id == gameID) {
+          desiredGame = game;
+          break;
         }
-      );
-    };
+      };
+      return desiredGame;
+    }
   }]);
 
 

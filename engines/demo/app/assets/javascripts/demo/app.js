@@ -2,7 +2,8 @@ angular.module('demoApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'demoFilters'
 ])
   .config(function ($routeProvider) {
     $routeProvider

@@ -5,10 +5,10 @@ script type="text/ng-template" id="new_game"
 
   .row
     .column.medium-6
-      h3 Join Game:
+      h3 Current Games:
       p
-        cb-games-table.column games="games"
-        .game ng-hide="games.length" No pending games at this stage
+        cb-games-table.column games="games | canJoinGame"
+        .game ng-hide="(games | canJoinGame).length" No pending games at this stage
 
     .column.medium-6
       h3 Create Game:
@@ -24,9 +24,9 @@ script type="text/ng-template" id="new_game"
 
           input type="submit" value="Ceate Game"
     .column.end
-      h3 Created (by you) Games:
-      cb-games-table.column games="pendingGames"
-      .game ng-hide="pendingGames.length" You have not created any games at this stage
+      h3 Available Games:
+      cb-games-table.column games="games | inCurrentGame"
+      .game ng-hide="(games | inCurrentGame).length" You have not created any games at this stage
 
   .row
     .column
