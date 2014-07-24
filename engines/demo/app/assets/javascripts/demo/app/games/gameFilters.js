@@ -9,7 +9,7 @@ angular.module('demoFilters', [])
         return $.grep(games, function (game) {
           return !!Utils.findById(game.players, user.id)
         })
-      }, JSON.stringify
+      }, keys
     )
   }])
   .filter('canJoinGame', ['accountService', function (accountService) {
@@ -20,6 +20,18 @@ angular.module('demoFilters', [])
         return $.grep(games, function (game) {
           return !Utils.findById(game.players, user.id)
         })
-      }, JSON.stringify
+      }, keys
     )
   }]);
+
+function keys(games) {
+  var res = [], player_ids;
+  $.each(games, function(i, game) {
+    player_ids = [];
+    $.each(game.players, function(i, player) {
+      player_ids.push(player.id)
+    });
+    res.push({game: game.id, players: player_ids})
+  });
+  return JSON.stringify(res)
+}

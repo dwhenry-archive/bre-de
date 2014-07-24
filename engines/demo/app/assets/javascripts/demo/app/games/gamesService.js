@@ -37,21 +37,40 @@ angular.module('demoApp')
     };
 
     this.leaveGame = function(gameID) {
-      // this is wrong.. just to display change on screen.. fix once everything else works
       var game = Utils.findById(games, gameID);
-      var player = Utils.findById(game.players, user.id);
-      game.players.splice(game.players.indexOf(player), 1);
+      var stats = game.stats.replace(/\((\d+) /, function (m, m1) {
+        return '(' + (parseInt(m1) - 1) + ' '
+      });
+
+      var newGame = Utils.simpleClone(game, {players: Utils.findExceptById(game.players, user.id), stats: stats});
+      games[games.indexOf(game)] = newGame;
 
       return putAction(gameID, 'leave_game')
-      .then(this.loadGames)
+      .then(this.loadGameWithDelay)
     };
 
     this.joinGame = function(gameID) {
       var game = Utils.findById(games, gameID);
-      game.players.push({id: user.id, name: user.name, status: 'pending'});
+      var stats = game.stats.replace(/\((\d+) /, function (m, m1) {
+        return '(' + (parseInt(m1) + 1) + ' '
+      });
+
+      var newUser = {id: user.id, name: user.name, status: 'pending'}
+      var newGame = Utils.simpleClone(game, {players: [newUser].concat(game.players), stats: stats});
+      games[games.indexOf(game)] = newGame;
 
       return putAction(gameID, 'add_player')
-      .then(this.loadGames)
+      .then(this.loadGameWithDelay)
+    };
+
+    var gameloader;
+    var local = this;
+    this.loadGameWithDelay = function() {
+      if(gameloader) gameloader.clearTimeout();
+      gameloader = setTimeout(function() {
+        gameloader = null;
+        local.loadGames()
+      }, 1000)
     };
 
     function putAction(gameID, action) {

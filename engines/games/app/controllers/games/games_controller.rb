@@ -1,19 +1,11 @@
 module Games
   class GamesController < Games::ApplicationController
     def index
-      if params[:filter]
-        render json: GamesSerializer.new(
-          Responsible::Consumer.new,
-          Game.filter(params[:filter], current_user).all,
-          current_user
-        )
-      else
-        render json: GamesSerializer.new(
-          Responsible::Consumer.new,
-          Game.all,
-          current_user
-        )
-      end
+      render json: GamesSerializer.new(
+        Responsible::Consumer.new,
+        Game.all,
+        current_user
+      )
     end
 
     def create

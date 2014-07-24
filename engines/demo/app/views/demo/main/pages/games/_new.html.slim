@@ -28,6 +28,11 @@ script type="text/ng-template" id="new_game"
       cb-games-table.column games="games | inCurrentGame"
       .game ng-hide="(games | inCurrentGame).length" You have not created any games at this stage
 
+    /.column.end
+    /  h3 All:
+    /  cb-games-table.column games="games"
+    /  .game ng-hide="games.length" You have not created any games at this stage
+
   .row
     .column
       h3
