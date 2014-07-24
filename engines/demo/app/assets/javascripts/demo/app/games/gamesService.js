@@ -1,6 +1,6 @@
 
 angular.module('demoApp')
-  .service('gamesService',['$http', 'accountService', function($http, accountService) {
+  .service('gamesService',['$http', 'accountService', 'cbUtils', function($http, accountService, cbUtils) {
     var user = accountService.getUser();
     var games = [];
 
@@ -37,12 +37,15 @@ angular.module('demoApp')
     };
 
     this.leaveGame = function(gameID) {
-      var game = Utils.findById(games, gameID);
+      var game = cbUtils.findById(games, gameID);
       var stats = game.stats.replace(/\((\d+) /, function (m, m1) {
         return '(' + (parseInt(m1) - 1) + ' '
       });
 
-      var newGame = Utils.simpleClone(game, {players: Utils.findExceptById(game.players, user.id), stats: stats});
+      var newGame = cbUtils.simpleClone(game, {
+        players: cbUtils.findExceptById(game.players, user.id),
+        stats: stats
+      });
       games[games.indexOf(game)] = newGame;
 
       return putAction(gameID, 'leave_game')
@@ -50,13 +53,16 @@ angular.module('demoApp')
     };
 
     this.joinGame = function(gameID) {
-      var game = Utils.findById(games, gameID);
+      var game = cbUtils.findById(games, gameID);
       var stats = game.stats.replace(/\((\d+) /, function (m, m1) {
         return '(' + (parseInt(m1) + 1) + ' '
       });
 
       var newUser = {id: user.id, name: user.name, status: 'pending'}
-      var newGame = Utils.simpleClone(game, {players: [newUser].concat(game.players), stats: stats});
+      var newGame = cbUtils.simpleClone(game, {
+        players: [newUser].concat(game.players),
+        stats: stats
+      });
       games[games.indexOf(game)] = newGame;
 
       return putAction(gameID, 'add_player')
@@ -66,7 +72,7 @@ angular.module('demoApp')
     var gameloader;
     var local = this;
     this.loadGameWithDelay = function() {
-      if(gameloader) gameloader.clearTimeout();
+      gameloader && gameloader.clearTimeout();
       gameloader = setTimeout(function() {
         gameloader = null;
         local.loadGames()

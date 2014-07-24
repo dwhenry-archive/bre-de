@@ -1,24 +1,24 @@
 'use strict'
 
 angular.module('demoFilters', [])
-  .filter('inCurrentGame', ['accountService', function (accountService) {
+  .filter('inCurrentGame', ['accountService', 'cbUtils', function (accountService, cbUtils) {
     var user = accountService.getUser();
 
     return _.memoize(
       function (games) {
         return $.grep(games, function (game) {
-          return !!Utils.findById(game.players, user.id)
+          return !!cbUtils.findById(game.players, user.id)
         })
       }, keys
     )
   }])
-  .filter('canJoinGame', ['accountService', function (accountService) {
+  .filter('canJoinGame', ['accountService', 'cbUtils', function (accountService, cbUtils) {
     var user = accountService.getUser();
 
     return _.memoize(
       function (games) {
         return $.grep(games, function (game) {
-          return !Utils.findById(game.players, user.id)
+          return !cbUtils.findById(game.players, user.id)
         })
       }, keys
     )
