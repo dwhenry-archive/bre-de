@@ -2,7 +2,9 @@ module Games
   class Game < ActiveRecord::Base
     self.table_name = 'games'
     belongs_to :creator, class_name: Games::User
-    has_many :players, class_name: Games::Player
+    has_many :players, class_name: Games::Player, inverse_of: :game
+
+    validate :number_of_players
 
     STATES = [
       PENDING = 'pending'
@@ -18,29 +20,15 @@ module Games
     end
 
     def add_player(user)
-      if players.where(user_id: user.id).any?
-        self.errors[:base] << 'User is already a player in this game'
-        return false
-      elsif players.count >= max_player
-        self.errors[:base] << 'Game already has required number of player'
-        return false
-      else
-        self.class.transaction do
-          players.create(
-            status: Player::PENDING,
-            user: user
-          ) && (
-            # This is a fail safe against two people attempt to join a gaim simultaneously
-            if players.count > max_player
-              raise ActiveRecord::Rollback
-              self.errors[:base] << 'Game player assignment error. We are currently unable to determine the exact number of players in the game.  Please refresh and try again'
-            end
-            return true
-          )
-          # This is a fail safe against two people attempt to join a gaim simultaneously
-          raise ActiveRecord::Rollback if players.count > max_player
-          return true
-        end
+      self.class.transaction do
+        players.create!(
+          status: Games::Player::PENDING,
+          user: user
+        )
+        players.reload
+        # This is a fail safe against two people attempt to join a gaim simultaneously
+        raise ActiveRecord::Rollback if players.count > max_player
+        return true
       end
       self.errors[:base] << 'This was unexpected.. Please try that again..'
       false
@@ -61,31 +49,26 @@ module Games
       false
     end
 
+    private
+
+    def number_of_players
+      if players.length > max_player
+        errors.add(:players, "count must be less than #{max_player}")
+      end
+    end
+
     class << self
       def build_for_user(user, max_player)
+        player = Games::Player.new(
+          status: Games::Player::PENDING,
+          user: user
+        )
         new(
-          status: Game::PENDING,
+          status: Games::Game::PENDING,
           creator: user,
           max_player: max_player,
-          players: [
-            Game::Player.new(
-              status: Player::PENDING,
-              user: user
-            )
-          ]
+          players: [ player ]
         )
-      end
-
-      def filter(filter_type, user)
-        case filter_type
-          when 'for'
-            joins(:players)
-            .where(players: {user_id: user.id})
-          when 'waiting'
-            joins(:players)
-            .where(["players.user_id != ?", user.id])
-            .where(status: 'pending')
-        end
       end
     end
   end
