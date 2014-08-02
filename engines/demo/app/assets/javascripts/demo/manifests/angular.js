@@ -3,5 +3,6 @@
 //=require ../angular/angular-cookies/angular-cookies.js
 //=require ../angular/angular-sanitize/angular-sanitize.js
 //=require ../angular/angular-route/angular-route.js
-//=require ../app.js
-//=require_tree ../app/
+
+//= require ../app.js
+//= require_tree ../app/

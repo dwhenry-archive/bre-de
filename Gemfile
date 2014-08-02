@@ -42,6 +42,7 @@ gem "slim"
 gem "responsible", git: "git@github.com:reevoo/responsible.git"
 
 gem "poltergeist"
+gem "angularjs-rails"
 
 require "./lib/boot_inquirer"
 gemspec path: "engines/shared"
