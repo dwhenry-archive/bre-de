@@ -50,11 +50,12 @@ BootInquirer.each_active_app do |app|
   gemspec path: "engines/#{app.gem_name}"
 end
 
-group :test, :development do
+group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'rspec-rails'
   gem "capybara"
+  gem 'jasmine'
 end
 
 group :development do
