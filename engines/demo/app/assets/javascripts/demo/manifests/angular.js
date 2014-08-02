@@ -1,8 +1,9 @@
-//=require ../angular/angular/angular.js
-//=require ../angular/angular-resource/angular-resource.js
-//=require ../angular/angular-cookies/angular-cookies.js
-//=require ../angular/angular-sanitize/angular-sanitize.js
-//=require ../angular/angular-route/angular-route.js
+//= require angular
+//= require angular-resource
+//= require angular-cookies
+//= require angular-sanitize
+//= require angular-route
 
 //= require ../app.js
 //= require_tree ../app/
+
