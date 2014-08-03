@@ -1,1 +1,1 @@
-//= require angular-mock
+//= require angular-mocks
