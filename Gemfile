@@ -43,6 +43,7 @@ gem "responsible", git: "git@github.com:reevoo/responsible.git"
 
 gem "poltergeist"
 gem "angularjs-rails"
+gem 'pusher'
 
 require "./lib/boot_inquirer"
 gemspec path: "engines/shared"

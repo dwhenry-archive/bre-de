@@ -5,7 +5,7 @@ angular.module('demoApp', [
   'ngRoute',
   'demoFilters'
 ])
-  .config(function ($routeProvider) {
+  .config(['$routeProvider', function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'login'
@@ -20,7 +20,7 @@ angular.module('demoApp', [
         controller: 'logoutController'
       })
       .when('/signup', {
-        templateUrl: 'signup',
+        templateUrl: 'signup'
       })
 
       // Games
@@ -43,4 +43,6 @@ angular.module('demoApp', [
       .otherwise({
         redirectTo: '/'
       })
-  })
+  }]).run(['cbNotifier', function(cbNotifier) {
+    cbNotifier.watch('gameUpdate');
+  }]);

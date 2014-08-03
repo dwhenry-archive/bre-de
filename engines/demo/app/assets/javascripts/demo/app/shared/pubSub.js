@@ -8,10 +8,11 @@ angular.module("demoApp")
   var cache = {};
   var PubSub = {
     publish: function (topic, args) {
+      args = args ? [args] : []
       if(cache[topic]) {
         var i, l = cache[topic].length;
         for(i=0; i<l; i++) {
-          cache[topic][i].apply(null, args || []);
+          cache[topic][i].apply(null, args);
         }
       }
     },

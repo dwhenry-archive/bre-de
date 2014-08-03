@@ -1,8 +1,28 @@
 
 angular.module('demoApp')
-  .service('gamesService',['$http', 'accountService', 'cbUtils', function($http, accountService, cbUtils) {
+  .service('gamesService',['$http', 'accountService', 'cbUtils', 'cbPubSub', function($http, accountService, cbUtils, cbPubSub) {
     var user = accountService.getUser();
     var games = [];
+
+    var self = this;
+
+    cbPubSub.subscribe('gameUpdate', function(data) {
+      if(data.newGame) {
+        self.loadGameWithDelay();
+        console.log('new Game')
+        return;
+      }
+
+      var i, l = games.length;
+      for(i=0; i < l; i++) {
+        if(games[i].id == data.id) {
+          self.loadGameWithDelay();
+          console.log('matching game ID')
+          return;
+        }
+      }
+      console.log('nothing happening here')
+    });
 
     this.loadGames = function() {
       $http({method: 'GET', url: '/games?email=' + user.email + '&token=' + user.token})
@@ -49,7 +69,6 @@ angular.module('demoApp')
       games[games.indexOf(game)] = newGame;
 
       return putAction(gameID, 'leave_game')
-      .then(this.loadGameWithDelay)
     };
 
     this.joinGame = function(gameID) {
@@ -66,7 +85,6 @@ angular.module('demoApp')
       games[games.indexOf(game)] = newGame;
 
       return putAction(gameID, 'add_player')
-      .then(this.loadGameWithDelay)
     };
 
     var gameloader;
