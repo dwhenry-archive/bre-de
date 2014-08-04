@@ -40,7 +40,7 @@ module Games
         'gameUpdate',
         {
           id: @game.id,
-          newGame: @game.new_record?
+          newGame: action_name == 'create'
         }
       )
     end

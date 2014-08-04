@@ -22,7 +22,8 @@ describe "User Login" do
         "success"     => true,
         "auth_token"  => "friendly_token",
         "name"        => "bob",
-        "email"       => "test@test.com"
+        "email"       => "test@test.com",
+        "id"          => user.id
       )
     end
   end

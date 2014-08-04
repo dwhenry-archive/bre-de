@@ -3,11 +3,13 @@ module Games
     self.table_name = 'games'
     belongs_to :creator, class_name: Games::User
     has_many :players, class_name: Games::Player, inverse_of: :game
+    has_many :tiles, class_name: Games::Tile, inverse_of: :game
 
     validate :number_of_players
 
     STATES = [
-      PENDING = 'pending'
+      PENDING = 'pending',
+      RUNNING = 'running',
     ]
 
     def execute_command(command, user)
@@ -20,6 +22,7 @@ module Games
     end
 
     def add_player(user)
+      status = false
       self.class.transaction do
         players.create!(
           status: Games::Player::PENDING,
@@ -28,10 +31,27 @@ module Games
         players.reload
         # This is a fail safe against two people attempt to join a gaim simultaneously
         raise ActiveRecord::Rollback if players.count > max_player
-        return true
+        status = true
       end
-      self.errors[:base] << 'This was unexpected.. Please try that again..'
-      false
+      return false unless status
+
+      init_game if players.count == max_player
+      true
+    end
+
+    def init_game
+      self.class.transaction do
+
+        update_attributes(status: RUNNING)
+        players.each do |player|
+          player.update_attributes(status: Games::Player::PICK_INIT_TILES)
+        end
+
+        game_tiles = Games::Tile::COLORS.product(Games::Tile::VALUES).sort_by { rand }
+        game_tiles.each_with_index do |(color, value), position|
+          tiles.create(color: color, value: value, position: position)
+        end
+      end
     end
 
     def remove_player(user)
