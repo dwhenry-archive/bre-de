@@ -54,6 +54,24 @@ module Games
       end
     end
 
+    def select_tile(options)
+      tile = tiles.order(:position)[options.fetch(:position)]
+
+      if tile.player.present?
+        self.errors[:base] << 'Tile already taken'
+        return false
+      end
+
+      tile.update_attributes(player: options.fetch(:player))
+
+      if tile.player != options[:player]
+        self.errors[:base] << 'Tile already taken'
+        return false
+      end
+
+      true
+    end
+
     def remove_player(user)
       if players.where(user_id: user.id).none?
         self.errors[:base] << 'User is not a player in this game'

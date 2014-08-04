@@ -4,6 +4,7 @@ module Games
 
     belongs_to :game, class_name: Games::Game, inverse_of: :players
     belongs_to :user, class_name: Games::User
+    has_many :tiles, class_name: Games::Tile
 
     validates :user_id, uniqueness: { scope: :game_id }
 

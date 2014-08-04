@@ -72,6 +72,28 @@ describe Games::Game do
         {color: 'black', value: '9'},
       ])
     end
+
+    it 'allows players to select tiles in any order' do
+      p1, p2 = *game.players
+
+      game.select_tile(player: p1, position: 12)
+      game.select_tile(player: p1, position: 11)
+      game.select_tile(player: p1, position: 10)
+      game.select_tile(player: p2, position: 9)
+      game.select_tile(player: p2, position: 8)
+
+      expect(p1.tiles.count).to eq(3)
+      expect(p2.tiles.count).to eq(2)
+    end
+
+    it 'raises a tile already taken error tile has been taken' do
+      p1, p2 = *game.players
+
+      game.select_tile(player: p1, position: 12)
+      game.select_tile(player: p1, position: 12)
+
+      expect(game.errors.full_messages).to eq(['Tile already taken'])
+    end
   end
 end
 
