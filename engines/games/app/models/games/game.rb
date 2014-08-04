@@ -5,15 +5,6 @@ module Games
     has_many :players, class_name: Games::Player, inverse_of: :game
 
     validate :number_of_players
-    after_save :publish_notification
-
-    def publish_notification
-      Pusher.trigger(
-        'CodeBreaker',
-        'gameUpdate',
-        id: id, newGame: self.new_record?
-      )
-    end
 
     STATES = [
       PENDING = 'pending'

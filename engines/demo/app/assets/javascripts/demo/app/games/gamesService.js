@@ -8,7 +8,7 @@ angular.module('demoApp')
 
     cbPubSub.subscribe('gameUpdate', function(data) {
       if(data.newGame) {
-        self.loadGameWithDelay();
+        self.loadGames();
         console.log('new Game')
         return;
       }
@@ -16,7 +16,7 @@ angular.module('demoApp')
       var i, l = games.length;
       for(i=0; i < l; i++) {
         if(games[i].id == data.id) {
-          self.loadGameWithDelay();
+          self.loadGames();
           console.log('matching game ID')
           return;
         }
@@ -57,45 +57,13 @@ angular.module('demoApp')
     };
 
     this.leaveGame = function(gameID) {
-      var game = cbUtils.findById(games, gameID);
-      var stats = game.stats.replace(/\((\d+) /, function (m, m1) {
-        return '(' + (parseInt(m1) - 1) + ' '
-      });
-
-      var newGame = cbUtils.simpleClone(game, {
-        players: cbUtils.findExceptById(game.players, user.id),
-        stats: stats
-      });
-      games[games.indexOf(game)] = newGame;
-
       return putAction(gameID, 'leave_game')
     };
 
     this.joinGame = function(gameID) {
-      var game = cbUtils.findById(games, gameID);
-      var stats = game.stats.replace(/\((\d+) /, function (m, m1) {
-        return '(' + (parseInt(m1) + 1) + ' '
-      });
-
-      var newUser = {id: user.id, name: user.name, status: 'pending'}
-      var newGame = cbUtils.simpleClone(game, {
-        players: [newUser].concat(game.players),
-        stats: stats
-      });
-      games[games.indexOf(game)] = newGame;
-
       return putAction(gameID, 'add_player')
     };
 
-    var gameloader;
-    var local = this;
-    this.loadGameWithDelay = function() {
-      gameloader && gameloader.clearTimeout();
-      gameloader = setTimeout(function() {
-        gameloader = null;
-        local.loadGames()
-      }, 1000)
-    };
 
     function putAction(gameID, action) {
       return $http({
