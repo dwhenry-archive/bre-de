@@ -5,7 +5,7 @@ module Games
     initializer 'account.append_migrations' do |app|
       unless app.root.to_s == root.to_s
         config.paths["db/migrate"].expanded.each do |path|
-          app.config.paths["db/migrate"].push(path)
+          app.config.paths["db/migrate"] << path
         end
       end
     end
