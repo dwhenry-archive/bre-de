@@ -10,8 +10,9 @@ module Games
 
     STATES = [
       PENDING = 'pending',
-      WAITING = 'waiting',
       PICK_INIT_TILES = 'pick_init_tiles',
+      PICKED_INIT_TILES = 'picked_init_tiles',
+      WAITING = 'waiting',
       PICK_TILE = 'pick_tile',
       GUESS_PIECE = 'guess_piece',
       PICK_TILE_OR_PASS = 'pick_tile_or_pass',
